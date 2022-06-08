@@ -1,0 +1,33 @@
+<div class="container mx">
+
+    <h2>Cart</h2>
+    {{#if products.length}}
+        <table class="table table-sm table-hover">
+            <thead class="thead-dark">
+                <tr>
+                    <th scope="col">&nbsp;</th>
+                    <th scope="col">Name</th>
+                    <th scope="col">Price</th>
+                </tr>
+            </thead>
+            <tbody class="">
+                {{#each products}}
+                <tr id={{this._id}}>
+                    <td class="align-middle"><img src="{{this.thumbnail}}" alt="{{this.name}}" width="60"></td>
+                    <td>{{this.name}}</td>
+                    <td>{{this.price}}</td>
+                    <td>
+                        <button class="btn btn-dark" onclick="removeFromCart('{{{../cartId}}}', '{{this._id}}')">Delete</button>
+                    </td>
+                </tr>
+                {{/each}}
+            </tbody>
+        </table>
+        <h5>TOTAL: ${{total}}</h5>
+        <div class="d-grid gap-2 col-6 mx-auto">
+            <a href="/order" class="btn btn-outline-dark" type="button">Continue</a>
+        </div>
+    {{!-- {{else}}
+        <h5>Empty Cart. Add products <a href="/">here</a></h5> --}}
+    {{/if}}
+</div>

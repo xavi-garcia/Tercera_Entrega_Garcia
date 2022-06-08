@@ -1,0 +1,24 @@
+<div class="container mx">
+  <div>
+    <h3>Welcome {{{username}}}</h3>
+  </div>
+
+
+  <h2>PRODUCTS</h2>
+    <div id="contenCard" class="row row-cols-2 row-cols-md-4 g-4">
+      {{#each products}}
+      <div id="card" class="card" style="width: 18rem;">
+        <img src="{{this.thumbnail}}" class="card-img-top" alt="{{this.name}}" />
+        <div class="card-body">
+          <h5 class="card-title">{{this.name}}</h5>
+          <p class="card-text">{{this.price}}</p>
+          <p class="card-text">{{this.description}}</p>
+          <button id="add-to-cart" class="btn btn-dark" onclick="addToCart('{{{../cartId}}}', '{{this._id}}')">
+            Add to Cart <span id="addSpan" class="badge text-bg-secondary">🧺</span>
+              </span>  
+          </button>
+        </div>
+      </div>
+      {{/each}}
+    </div>
+</div>
