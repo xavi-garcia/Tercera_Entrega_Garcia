@@ -3,7 +3,7 @@ const prodModel = require("../models/Products");
 
 //Log4js
 const log4js = require('log4js');
-const loggersConfig = require('./logger');
+const loggersConfig = require('../logger');
 const logger = log4js.getLogger();
 
 exports.getAll = async (req, res) => {

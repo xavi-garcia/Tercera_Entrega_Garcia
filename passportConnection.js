@@ -1,15 +1,17 @@
-const passport = require('passport');
+
 const LocalStrategy = require('passport-local').Strategy;
 const bcrypt = require('bcrypt');
+
 //Log4js
 const log4js = require('log4js');
 const loggersConfig = require('./logger');
 const logger = log4js.getLogger();
 
-
 const User = require('./models/User');
-const Passport = () =>{
+const cartModel = require("./models/Cart");
 
+
+module.exports = (passport) => {
 
     const createHash = (password) =>{
         return bcrypt.hashSync(
@@ -33,13 +35,31 @@ const Passport = () =>{
                     address: req.body.address,
                     age: req.body.age,
                     phone: req.body.phone,
+                    email: req.body.email,
                     avatar: req.body.avatar,
                 }
                 User.create(newUser,(err, userCreated)=>{
+                    const cart = cartModel.create({ newUser: newUser._id});
+                    logger.info("Cart successfully created:\n" + cart);
+  
+        
+                    const template = `
+                    <div>
+                    <h1 style="color: blue;"> 
+                        New registered user:
+                    </h1>
+                    <li>Name: ${newUser.name} ${newUser.username}</li>
+                    <li>Email: ${newUser.email}</li>
+                    <li>Phone: ${newUser.phone}</li>
+                    </div>
+                    `
+                    logger.info("new registered user")
                     if(err) return done (err);
-                    return done(null, userCreated)
+                    return done(null, userCreated);
+                    
                 })
-            })
+            });
+
         }
 
     ))
@@ -65,12 +85,10 @@ const Passport = () =>{
         return done(null, user.id)
     });
 
-    passport.deserializeUser((id, done)=>{
-        User.findById(id,(err,user)=>{
-            return done(err, user)
-        })
-    });
+    passport.deserializeUser(async (id, done) => {
+        done(null, await User.findById(id));
+      });
 
 }
 
-module.exports = Passport;
+

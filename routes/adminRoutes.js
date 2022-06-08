@@ -23,7 +23,7 @@ router.get("/products", auth, adminManager.getProducts)
 router.get("/addProduct", auth, (req, res) => res.render("admin/addProduct"))
 
 // POST add product admin
-router.post("/addProduct", productManager.post);
+router.post("/addProduct", productManager.upload);
 
 // GET orders admin
 router.get("/orders", auth, adminManager.getOrders)

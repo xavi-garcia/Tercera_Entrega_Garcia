@@ -34,14 +34,8 @@ const compression = require('compression');
 
 //Log4js
 const log4js = require('log4js');
-const loggersConfig = require('./logger');
+const loggersConfig = require('../logger');
 const logger = log4js.getLogger();
-
-// mail sender
-const mailSender = require('../notifications/mail')
-
-// twilio sms sender 
-const twilioSender = require("../notifications/twilio")
 
 
 
@@ -88,15 +82,14 @@ router.get("/profile", auth, async (req, res)=>{
     res.render("profile", { name, username, avatar, age, phone, email })
 });
   
-  
-//Logout
-router.get('/logout', auth, (req, res) => {
-      const { firstName } = req.user
-      req.logOut()
-      res.render("logout", { firstName });
-      res.redirect('/');
-})
-  
+//Logout ('Now logout() requires a callback function)
+router.get('/logout', auth, function(req, res, next) {
+    const { username } = req.user
+    req.logout(function(err) {
+      if (err) { return next(err); }
+      res.render("logout", { username });
+    });
+  });
 
 // GET Cart
 router.get('/cart', auth, async (req, res) => {
@@ -139,7 +132,7 @@ router.get("/order", auth, async (req, res) => {
           ${prodElements.join(" ")}
         </ul>
       `
-        mailSender.send(template, email, firstName)
+        mailSender.send(template, email, username)
         twilioSender.sendSms(username, email)
         twilioSender.sendWhatsapp(phone, username, email)
         context.sent = true

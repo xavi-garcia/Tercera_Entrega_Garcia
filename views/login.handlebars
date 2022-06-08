@@ -1,12 +1,12 @@
 <div class="container mx">
 
     <h2>Log In</h2>
-    <form method="post" class="m-4">
+    <form method="post" action="/login" class="m-4">
             <strong>Log into your account</strong>
             {{> formErr }}
         <div class="input-group">
-            <label for="email" class="visually-hidden">Mail</label>
-            <input name="email" type="email" class="form-control" placeholder="Mail" required>
+            <label for="username" class="visually-hidden">Username</label>
+            <input name="username" type="text" class="form-control" placeholder="Username" required>
         </div>
         <div class="input-group">
             <label for="password" class="visually-hidden">Password</label>
@@ -16,5 +16,5 @@
             <button class="btn btn-primary" type="submit"> Submit </button>
         </div>
     </form>
-        <h3>You don't have an account, yet? <a href="/sign up"><strong>Sign up!</strong></a></h3>
+        <h3>You don't have an account, yet? <a href="/signup"><strong>Sign up!</strong></a></h3>
 </div>

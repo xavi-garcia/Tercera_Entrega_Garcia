@@ -1,0 +1,35 @@
+<div class="container mx">
+  <h2>Orders</h2>
+      <table class="table table-sm table-hover">
+        <thead class="thead-dark">
+            <tr>
+                <th scope="col">User</th>
+                <th scope="col">Date</th>
+                <th scope="col">Total</th>
+                <th scope="col">Sent</th>
+                <th scope="col">&nbsp;</th>
+            </tr>
+        </thead>
+        <tbody class="">
+            {{#each orders}}
+            <tr>
+              <td>{{this.userId}}</td>
+              <td>{{this.created}}</td>
+              <td>{{this.total}}</td>
+              <td>{{this.send}}</td>
+              <td>        
+                <div class="d-grid gap-2 col-1 mx-auto">
+                  <button class="btn btn-dark" type="button" onclick="sendOrder('{{this._id}}')">Send</button>
+                </div>
+              </td>
+            </tr>
+            {{/each}}
+        </tbody>
+    </table>
+  <div class="d-grid gap-2 col-6 mx-auto">
+    <button class="btn btn-dark" type="button" onclick="deleteAllOrders()">Delete All</button>
+  </div>
+  <div class="d-grid gap-2 col-6 mx-auto">
+    <a href="/admin" class="btn btn-dark" type="button">Back</a>
+  </div>
+</div>

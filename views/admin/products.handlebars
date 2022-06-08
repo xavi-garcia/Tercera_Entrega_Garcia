@@ -1,0 +1,29 @@
+<div class="container mx">
+  <h2>Products</h2>
+        <div class="d-grid gap-2 col-6 mx-auto">
+            <a href="/admin/addProducts" class="btn btn-outline-dark" type="button">Add Product</a>
+        </div>
+      <table class="table table-sm table-hover">
+        <thead class="thead-dark">
+            <tr>
+                <th scope="col">&nbsp;</th>
+                <th scope="col">name</th>
+                <th scope="col">price</th>
+                <th scope="col">description</th>
+            </tr>
+        </thead>
+        <tbody class="">
+            {{#each products}}
+            <tr>
+              <td><img src="{{this.thumbnail}}" alt="{{this.name}}" width="50"></td>
+              <td>{{this.name}}</td>
+              <td>{{this.price}}</td>
+              <td>{{this.description}}</td>
+            </tr>
+            {{/each}}
+        </tbody>
+    </table>
+  <div class="d-grid gap-2 col-6 mx-auto">
+    <a href="/admin" class="btn btn-dark" type="button">Back</a>
+  </div>
+</div>
