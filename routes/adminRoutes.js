@@ -6,6 +6,8 @@ const productManager = require("../Managers/ProductsManager");
 const orderManager = require("../Managers/OrdersManager");
 const adminManager = require("../Managers/AdminManager");
 
+//Schema
+const productSchema = require("../schema/productsSchema");
 
 // middleware
 const auth = require('../middlewares/auth');
@@ -13,23 +15,22 @@ const auth = require('../middlewares/auth');
 // passport
 const passport = require('passport');
 
-// GET admin index
 router.get("/", auth, adminManager.index);
-
-// GET products admin
-router.get("/products", auth, adminManager.getProducts)
-
-// GET add products admin
-router.get("/addProduct", auth, (req, res) => res.render("admin/addProduct"))
-
-// POST add product admin
-router.post("/addProduct", productManager.upload);
-
-// GET orders admin
-router.get("/orders", auth, adminManager.getOrders)
-
-// DELETE orders admin
-router.delete("/orders", auth, orderManager.deleteAllOrders)
-
+router.get("/users", auth, adminManager.getUsers);
+router.get("/addUser", auth, (req, res) => res.render("admin/addUser"));
+router.post("/addUser",
+    passport.authenticate("signup", {
+        successRedirect: "/addAvatar",
+        failureRedirect : "/addUser",
+        failureFlash: true
+    })
+);
+router.get("/products", auth, adminManager.getProducts);
+router.get("/addProduct", auth, (req, res) => res.render("admin/addProduct"));
+router.post("/addProduct", productManager.upload)
+router.get("/updateProduct/:id", auth, adminManager.getById);
+router.post('/updateProduct/:id', auth, productManager.update)
+router.get("/orders", auth, adminManager.getOrders);
+router.delete("/orders", auth, orderManager.deleteAllOrders);
 
 module.exports = router

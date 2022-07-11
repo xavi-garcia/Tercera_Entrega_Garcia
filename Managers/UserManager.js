@@ -1,12 +1,12 @@
-const userModel = require("../models/User");
+const userSchema = require("../schema/userSchema");
 
 //Log4js
 const log4js = require('log4js');
-const loggersConfig = require('../logger');
+const loggersConfig = require('../config/logger');
 const logger = log4js.getLogger();
 
 exports.getAllUsers = async (req, res) => {
-  const users = await userModel.find().lean();
+  const users = await userSchema.find().lean();
   logger.info("User: " + users.length)
   res.status(200).send(users);
 };
@@ -17,11 +17,10 @@ exports.getUserId = async (req, res) => {
     return res.sendStatus(404)
     }
     try {
-        const user = await userModel.findById({ _id: id }).lean();
+        const user = await userSchema.findById({ _id: id }).lean();
         logger.info("User:\n" + user.username);
         res.status(200).send({user});
-    } 
-    catch (err) {
+    } catch (err) {
         logger.error("Id not found" + err);
         res.status(500).send(err);
     }
@@ -30,7 +29,7 @@ exports.getUserId = async (req, res) => {
 
 exports.deleteAll = async (req, res) => {
     try {
-        await userModel.deleteMany({});
+        await userSchema.deleteMany({});
         logger.info("All useres were removed from the database");
         res.status(200).send("All cleared");
     } 
@@ -43,7 +42,7 @@ exports.deleteAll = async (req, res) => {
 exports.deleteOne = async (req, res) => {
     const { id } = req.params
     try {
-        await userModel.deleteOne({ _id: id});
+        await userSchema.deleteOne({ _id: id});
         logger.info("User removed from database");
         res.sendStatus(200)
     } 

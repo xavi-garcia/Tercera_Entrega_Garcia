@@ -2,39 +2,43 @@
 
     <h2>Sign Up</h2>
     
-    <form method="post"  class="m-4">
+    <form method="post"  action="/signup" class="m-4">
         
         <div class="input-group">
             <label for="name" class="input-group-text visually-hidden">Name </label>
-            <input name="name" type="text" placeholder="name" class="form-control" required>
+            <input name="name" type="text" placeholder="Name" class="form-control" required>
         </div>
         <div class="input-group">
             <label for="username" class="input-group-text visually-hidden">Username </label>
-            <input name="username"  type="text" placeholder="username" class="form-control" required>
+            <input name="username"  type="text" placeholder="Username" class="form-control" required>
         </div>
         <div class="input-group">
             <label for="password" class="input-group-text visually-hidden">Password</label>
-            <input name="password" type="text" placeholder="password" class="form-control" required>
+            <input name="password" type="text" placeholder="Password" class="form-control" required>
         </div>
+        {{!-- <div class="input-group">
+            <label for="password" class="input-group-text visually-hidden">Password</label>
+            <input name="password" type="text" placeholder="Confirm Password" class="form-control" required>
+        </div> --}}
         <div class="input-group">
             <label for="address" class="input-group-text visually-hidden">Address</label>
-            <input name="address" type="text" placeholder="address" class="form-control" required>
+            <input name="address" type="text" placeholder="Address" class="form-control" required>
         </div>
         <div class="input-group">
             <label for="age" class="input-group-text visually-hidden">Age</label>
-            <input name="age" type="text" placeholder="age" class="form-control" required>
+            <input name="age" type="text" placeholder="Age" class="form-control" required>
         </div>
         <div class="input-group">
             <label for="phone" class="input-group-text visually-hidden">Phone </label>
-            <input id="phone" type="text" name="phone" placeholder="phone" class="form-control" required>
+            <input id="phone" type="text" name="phone" placeholder="Phone" class="form-control" required>
         </div>
         <div class="input-group">
             <label for="email" class="input-group-text visually-hidden">Email</label>
-            <input name="email" type="text" placeholder="email" class="form-control" required>
+            <input name="email" type="text" placeholder="Email" class="form-control" required>
         </div>
         <div class="input-group">
             <label for="avatar" class="input-group-text visually-hidden">Avatar</label>
-            <input name="avatar" type="text" placeholder="avatar" class="form-control" >
+            <input name="avatar" type="text" placeholder="Avatar" class="form-control" >
         </div>
         <div class="col-2">
             <button class="btn btn-primary" type="submit">Submit</button>

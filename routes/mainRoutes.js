@@ -2,15 +2,15 @@ const express = require('express');
 const router = express.Router();
 
 // Models
-const productModel = require("../models/Products")
-const cartModel = require("../models/Cart")
-const orderModel = require("../models/Order")
+const productSchema = require("../schema/productsSchema");
+const cartSchema = require("../schema/cartSchema");
+const orderSchema = require("../schema/orderSchema");
 
 // Manager
-const orderController = require("../Managers/OrdersManager")
+const orderController = require("../Managers/OrdersManager");
 
 // middleware
-const auth = require('../middlewares/auth')
+const auth = require('../middlewares/auth');
 
 // multer
 const multer  = require('multer')
@@ -34,20 +34,21 @@ const compression = require('compression');
 
 //Log4js
 const log4js = require('log4js');
-const loggersConfig = require('../logger');
+const loggersConfig = require('../config/logger');
 const logger = log4js.getLogger();
 
-
+// mail sender
+const mailSender = require('../config/notificationServices/mailSender');
 
 
 //Main
 router.get('/', auth, async (req, res) => {
-    const user = req.user
+    const user = req.user;
     
     try {
-        const prods = await productModel.find().lean()
-        const cart = await cartModel.findOne({ user: user._id.toString()})
-        res.render('main', { firstName: user.firstName, cartId: cart._id, products: prods })
+        const prods = await productSchema.find().lean()
+        const cart = await cartSchema.findOne({ user: user._id.toString()})
+        res.render('main', { username: user.username, cartId: cart._id, products: prods })
     } catch (err) {
         logger.error(err)
         res.status(500).send(err)
@@ -70,7 +71,8 @@ router.post("/login", passport.authenticate('login',{
 router.get('/signup', async (req, res) => res.render('signup'))
 
 router.post("/signup", passport.authenticate('signup',{
-    failureRedirect: '/signup'
+    failureRedirect: '/signup',
+    failureMessage: true
 }),(req, res)=>{
     res.redirect("/profile")
     logger.info(req.body)
@@ -81,6 +83,8 @@ router.get("/profile", auth, async (req, res)=>{
     const { name, username, avatar, age, phone, email } = req.user
     res.render("profile", { name, username, avatar, age, phone, email })
 });
+
+router.post('/addAvatar', upload.single('avatar', orderController.updateAvatar))
   
 //Logout ('Now logout() requires a callback function)
 router.get('/logout', auth, function(req, res, next) {
@@ -95,11 +99,14 @@ router.get('/logout', auth, function(req, res, next) {
 router.get('/cart', auth, async (req, res) => {
     const userId = req.user;
     try {
-        const cart = await cartModel.findOne({ user: userId._id.toString()}).lean();
-        const products = await Promise.all(cart.products.map(pId => productModel.findById(pId).lean()));
+        const cart = await cartSchema.findOne({ user: userId._id.toString()}).lean();
+        const products = await Promise.all(cart.products.map(pId => productSchema.findById(pId).lean()));
         const total = products.reduce((total, prod) => total + prod.price, 0);
-    
-        res.render('cart',  { cartId: cart._id, products, total });
+        // for(let i = o; total < products.length; --i){
+        //     total =+ i
+        //     return total
+        // }
+        res.render('cart', { cartId: cart._id, products, total});
     } catch (error) {
         logger.error(error)
         res.status(500).send(error)
@@ -113,28 +120,26 @@ router.get("/order", auth, async (req, res) => {
     const userId = req.user;
     const context = { sent: false };
   
-    const cart = await cartModel.findOne({ user: userId._id.toString()});
+    const cart = await cartSchema.findOne({ user: userId._id.toString()});
     const products = await Promise.all(cart.products.map(pId => productModel.findById(pId).lean()));
     const total = products.reduce((total, prod) => total + prod.price, 0);
   
     try {
-        await orderModel.create({
+        await orderSchema.create({
         userId: userId._id.toString(),
-        total})
+        total
+        })
 
         cart.products = []
         await cart.save()
       
         const prodElements = products.map(p => `<li>${p.name}</li>`)
         const template = `<h1 style="color: yellow;"> Your order is being processed </h1>
-        <p>AThese are your products: </p>
-        <ul>
-          ${prodElements.join(" ")}
-        </ul>
-      `
+                          <p>These are your products: </p>
+                          <ul>${prodElements.join(" ")}</ul>`
         mailSender.send(template, email, username)
-        twilioSender.sendSms(username, email)
-        twilioSender.sendWhatsapp(phone, username, email)
+        // twilioSender.sendSms(username, email)
+        // twilioSender.sendWhatsapp(phone, username, email)
         context.sent = true
         logger.info("Successful Order")
         } catch (err) {
@@ -148,7 +153,7 @@ router.get("/order", auth, async (req, res) => {
 
 //Error
 router.get("*", (req, res)=>{
-    logger.warn("can't access")
+    logger.error("This route doesn't exist")
     res.status(404).send("Not Found")
 })
 

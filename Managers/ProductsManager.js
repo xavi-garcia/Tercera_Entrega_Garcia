@@ -1,12 +1,12 @@
-const productModel = require("../models/Products");
+const productSchema = require("../schema/productsSchema");
 
 //Log4js
 const log4js = require('log4js');
-const loggersConfig = require('../logger');
+const loggersConfig = require('../config/logger');
 const logger = log4js.getLogger();
 
 exports.get = async (req, res) => {
-    products = await productModel.find(find);
+    products = await productSchema.find();
     logger.info("Products: " + products);
     res.status(200).send(products);
 },
@@ -14,10 +14,9 @@ exports.get = async (req, res) => {
 exports.getById = async (req, res) => {
     const { id } = req.params;
     try {
-        const getId = await productModel.findOne({_id: id});
+        const getId = await productSchema.findOne({_id: id});
         res.status(200).send(getId);
-    }
-    catch (error) {
+    } catch (error) {
         logger.error(error);
         res.status(500).send(error);
     }
@@ -26,7 +25,7 @@ exports.getById = async (req, res) => {
 exports.upload = async (req, res) => {
     const { body } = req;
     try {
-      await productModel.create(body);
+      await productSchema.create(body);
       res.status(201).redirect("/admin/products");
     } catch (error) {
       logger.error(error);
@@ -38,8 +37,8 @@ exports.update = async (req, res) => {
     const { body } = req;
     const { id } = req.params;
     try {
-        const update = await productModel.updateOne({ _id: id, }, { $set: body, });
-        res.status(201).send(update);
+        const update = await productSchema.updateOne({ _id: id, }, { $set: body, });
+        res.status(201).redirect('/admin/products');
     } catch (error) {
         logger.error(error);
         res.status(500).send(error);
@@ -50,7 +49,7 @@ exports.update = async (req, res) => {
 exports.deleteProd = async (req, res) => {
     const { id } = req.params;
     try {
-        await productModel.deleteOne({ _id: id });
+        await productSchema.deleteOne({ _id: id });
         res.status(200).send("Product deleted");
     } catch (err){
         logger.error("Id not found" + err)
@@ -59,6 +58,6 @@ exports.deleteProd = async (req, res) => {
 },
 
 exports.deleteAll = async (req, res) => {
-    await productModel.deleteMany({});
+    await productSchema.deleteMany({});
     res.status(200).send("All products were deleted");
 }

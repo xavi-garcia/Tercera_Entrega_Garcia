@@ -1,15 +1,17 @@
 const express = require('express');
-const app = express()
+const app = express();
 const session = require('express-session');
 const mongoose = require('mongoose');
+
 
 const http = require('http');
 const path = require('path');
 const cookieParser = require('cookie-parser');
+require('dotenv').config({path:'./config/env/.env'})
 
 //Log4js
 const log4js = require('log4js');
-const loggersConfig = require('./logger');
+const loggersConfig = require('./config/logger');
 const logger = log4js.getLogger();
 
 app.use(session({
@@ -20,7 +22,7 @@ app.use(session({
 
 //Passport
 const passport = require('passport');
-const initializePassport = require('./passportConnection')
+const initializePassport = require('./config/passportConnection')
 initializePassport(passport);
 app.use(passport.initialize());
 app.use(passport.session());
@@ -34,12 +36,18 @@ templateEngine(app);
 
 app.use(express.json());
 app.use(express.urlencoded({ extended: true }));
-app.use("/static", express.static(path.join(__dirname, "public")));
+app.use("/public", express.static(path.join(__dirname, "public")));
+
+
+
+const router = express.Router();
+
+
 
 // routers
 const adminRouter = require("./routes/adminRoutes");
-const cartRouter = require("./routes/cartRoutes");
-const prodRouter = require("./routes/productsRoutes");
+const cartRouter = require("./routes/cartRoutes");//funciona
+const prodRouter = require("./routes/productsRoutes");//funciona
 const userRouter = require("./routes/userRoutes");
 const mainRouter = require("./routes/mainRoutes");
 const infoRouter = require("./routes/infoRoutes");
@@ -59,11 +67,12 @@ const port = process.env.PORT || 8080;
 
 app.listen(port,()=>logger.info(` Running process ${process.pid} on port ${port}`))
 
-const URL = "mongodb+srv://javier:123@codercluster.mmv7k.mongodb.net/entregaterceradb?retryWrites=true&w=majority";
+const URL = `mongodb+srv://${process.env.MONGO_USER}:${process.env.MONGO_PASSWORD}@codercluster.mmv7k.mongodb.net/${process.env.MONGO_DBNAME}db?retryWrites=true&w=majority`;
 
 const MONGOOSE = mongoose.connect(URL, {
     useNewUrlParser: true, useUnifiedTopology: true
  }, error=>{
      if(error) throw new Error('Cannot connect');
-     logger.info("db connected")
+     logger.info("mongo database successfully connected")
 });
+
