@@ -1,29 +1,43 @@
 <div class="container mx">
   <h2>Users</h2>
-    <div class="d-grid gap-2 col-6 mx-auto">
-      <a href="/admin/addUser" class="btn btn-outline-dark" type="button">Add Users</a>
-    </div>
-      <table class="table table-sm table-hover">
-        <thead class="thead-dark">
-            <tr>
-                <th scope="col">Name</th>
-                <th scope="col">Username</th>
-                <th scope="col">Avatar</th>
-                <th scope="col">Email</th>
-            </tr>
-        </thead>
-        <tbody class="">
-            {{#each users}}
-            <tr>
-              <td>{{this.name}}</td>
-              <td>{{this.username}}</td>
-              <td>{{this.avatar}}</td>
-              <td>{{this.mail}}</td>
-            </tr>
-            {{/each}}
-        </tbody>
-    </table>
-  <div class="d-grid gap-2 col-6 mx-auto">
+  <table class="table align-middle mb-0 bg-white">
+  <thead class="bg-light">
+    <tr>
+      <th>Name</th>
+      <th>Email</th>
+      <th>Actions</th>
+    </tr>
+  </thead>
+  <tbody>
+    {{#each users}}
+    <tr>
+      <td>
+        <div class="d-flex align-items-center">
+          <img
+              src="{{this.avatar}}"
+              alt="{{this.name}}"
+              style="width: 45px; height: 45px"
+              class="rounded-circle"
+              />
+          <div class="ms-3">
+            <p class="fw-bold mb-1">{{this.name}}</p>
+            <p class="text-muted mb-0">{{this.username}}</p>
+          </div>
+        </div>
+      </td>
+      <td>
+        <p class="fw-normal mb-1">{{this.email}}</p>
+      </td>
+      <td>
+        <button type="button" class="btn btn-link btn-sm btn-rounded">
+          Edit
+        </button>
+      </td>
+    </tr>
+    {{/each}}
+  </tbody>
+</table>
+ <div class="d-grid gap-2 col-6 mx-auto">
     <a href="/admin" class="btn btn-dark" type="button">Back</a>
   </div>
 </div>

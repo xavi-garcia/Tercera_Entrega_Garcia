@@ -67,7 +67,7 @@ exports.updateSendOrder = async (req, res) => {
         const order = await orderSchema.findById({_id: id})
         order.send = true;
         await order.save();
-        //twilioSender.sendSms(username, email)
+        //twilioSender.sendMessage(username, email)
         res.sendStatus(202)
     } catch (err) {
     logger.error(err);

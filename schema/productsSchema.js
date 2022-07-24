@@ -22,6 +22,10 @@ const ProductsSchema = new mongoose.Schema(
             type: String, 
             required:true, 
         },
+        category: {
+            type: String,
+            required: true,
+        },
         thumbnail: { 
             type: String, 
             required:true, 
@@ -29,6 +33,9 @@ const ProductsSchema = new mongoose.Schema(
         timestamp: { 
             type: Number, 
             default: Date.now() 
+        },
+        quantity:{
+            type:Number
         }
     }
 );

@@ -3,20 +3,24 @@
       <table class="table table-sm table-hover">
         <thead class="thead-dark">
             <tr>
-                <th scope="col">User</th>
+                <th scope="col">Email</th>
                 <th scope="col">Date</th>
                 <th scope="col">Total</th>
+                <th scope="col">Order Id:</th>
                 <th scope="col">Sent</th>
+                <th scope="col">Address</th>
                 <th scope="col">&nbsp;</th>
             </tr>
         </thead>
         <tbody class="">
             {{#each orders}}
             <tr>
-              <td>{{this.userId}}</td>
+              <td>{{this.email}}</td>
               <td>{{this.created}}</td>
               <td>{{this.total}}</td>
-              <td>{{this.send}}</td>
+              <td>{{this.orderId}}</td>
+              <td>{{this.sent}}</td>
+              <td  ><button id="details"class="btn btn-dark" onclick="seeDetails()">Address</button></td>
               <td>        
                 <div class="d-grid gap-2 col-1 mx-auto">
                   <button class="btn btn-dark" type="button" onclick="sendOrder('{{this._id}}')">Send</button>

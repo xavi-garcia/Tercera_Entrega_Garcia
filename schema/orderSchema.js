@@ -1,19 +1,23 @@
 const mongoose = require("mongoose");
 
+
 const OrderSchema = mongoose.Schema(
     {
         userId: String,
-        total: { 
-            type: Number, 
-            default: 0 
-        },
+        email: String,
+        products: [],
+        sendAddress: String,
         created: { 
             type: Date,  
             default: Date.now 
         },
-        send: {
+        sent: {
             type: Boolean,
             default: false
+        },
+        orderId: {
+            type: Number,
+            default: 1
         }
     }
 );

@@ -1,37 +1,28 @@
-const addSpan = document.getElementById("addSpan")
-
-async function fadeOut(el) {
-  el.style.display = "none";
-};
-
-function fadeIn(el) {
-  return el.style.display = "block";
-};
-
-
-async function addToCart(cartId, productId) {
- 
+const addToCart = async (cartId, productId) => {
   try {
-    fadeIn(addSpan)
-    const res = await fetch(`/api/cart/${cartId}/products/${productId}`, { method: 'POST' })
-    console.log("STATUS", res.status)
-    console.log("Product successfully added", res)
+    const res = await fetch(`/api/cart/${cartId}/products/${productId}`, { method: 'POST' });
   } catch (error) {
     console.log(error)
   }
-  setTimeout(() => fadeOut(addSpan), 500);
 
 };
 
+const getInfo = async () =>{
+  const address = document.getElementById("address").value;
+  localStorage.setItem('address', address);
+  const prodName = document.getElementById("productName").value;
+  localStorage.setItem('productName', prodName);
+  const quantity = document.getElementById("quantity").value;
+  localStorage.setItem('quantity', quantity);
+  return address, quantity
+};
 
 const removeFromCart = async (cartId, productId) => {
   try {
     const res = await fetch(`/api/cart/${cartId}/products/${productId}`, { method: 'DELETE' })
-    console.log("Product successfully deleted", res)
     if (res.status != 200) {
       return "error"
     }
-  
     const el = document.getElementById(productId)
     el.parentElement.removeChild(el)
   } catch (err) {
@@ -42,9 +33,27 @@ const removeFromCart = async (cartId, productId) => {
 
 const deleteAllOrders = async()=>{
   const res = await fetch(`/admin/orders`, { method: 'DELETE' });
-  console.log("orders deleted")
   if (res.status != 200) {
     return "error"
   }
 };
 
+
+const getTotal = async () =>{
+  const price = document.getElementById("price").innerText;
+  alert(price )
+}
+
+
+const seeDetails = async () =>{
+  addressStorage = localStorage.getItem('address');
+  quantity = localStorage.getItem('quantity');
+  productName = localStorage.getItem('productName');
+  document.write(addressStorage, quantity, productName)
+
+}
+
+// let tbHandlebars = document.getElementById('details');
+// let tb = document.createElement('tb');
+// tb.innerHTML = `<p>${addressStorage}</p>`
+// tbHandlebars.appendChild(tb)

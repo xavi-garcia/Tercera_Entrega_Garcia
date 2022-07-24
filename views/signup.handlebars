@@ -1,48 +1,85 @@
-<div class="container mx">
+<section class="text-center">
+<div class="p-5 bg-image" style="
+        background-image: url('https://cdn.shopify.com/s/files/1/0088/9552/9065/files/Website_Banner_1600x.jpg?v=1635430629');
+        height: 300px;
+        "></div>
 
-    <h2>Sign Up</h2>
-    
-    <form method="post"  action="/signup" class="m-4">
-        
-        <div class="input-group">
+  <div class="card mx-4 mx-md-5 shadow-5-strong" style="
+        margin-top: -100px;
+        background: hsla(0, 0%, 100%, 0.8);
+        backdrop-filter: blur(30px);
+        ">
+    <div class="card-body py-5 px-md-5">
+
+      <div class="row d-flex justify-content-center">
+        <div class="col-lg-8">
+          <h2 class="fw-bold mb-5">Sign up now</h2>
+
+          <form method="POST"  action="/signup" class="m-4" id="formControl">
+
+            <div class="row">
+              <div class="col-md-6 mb-4">
+                <div class="form-outline">
             <label for="name" class="input-group-text visually-hidden">Name </label>
             <input name="name" type="text" placeholder="Name" class="form-control" required>
-        </div>
-        <div class="input-group">
+                </div>
+              </div>
+              <div class="col-md-6 mb-4">
+                <div class="form-outline">
             <label for="username" class="input-group-text visually-hidden">Username </label>
-            <input name="username"  type="text" placeholder="Username" class="form-control" required>
-        </div>
-        <div class="input-group">
+            <input  name="username"  type="text" placeholder="Username" class="form-control" required>
+                </div>
+              </div>
+            </div>
+
+            <div class="form-outline mb-4">
             <label for="password" class="input-group-text visually-hidden">Password</label>
-            <input name="password" type="text" placeholder="Password" class="form-control" required>
-        </div>
-        {{!-- <div class="input-group">
-            <label for="password" class="input-group-text visually-hidden">Password</label>
-            <input name="password" type="text" placeholder="Confirm Password" class="form-control" required>
-        </div> --}}
-        <div class="input-group">
+            <input id="passw1" name="password" type="text" placeholder="Password" class="form-control" required>
+            </div>
+
+            <div class="form-outline mb-4">
+            <label for="password" class="input-group-text visually-hidden">Confirm Password</label>
+            <input id="passw2" name="confirmPassword" type="text" placeholder="Confirm Password" class="form-control" required>
+            </div>
+
+            <div class="form-outline mb-4">
             <label for="address" class="input-group-text visually-hidden">Address</label>
             <input name="address" type="text" placeholder="Address" class="form-control" required>
-        </div>
-        <div class="input-group">
+            </div>
+
+            <div class="form-outline mb-4">
             <label for="age" class="input-group-text visually-hidden">Age</label>
             <input name="age" type="text" placeholder="Age" class="form-control" required>
-        </div>
-        <div class="input-group">
+            </div>
+
+            <div class="form-outline mb-4">
             <label for="phone" class="input-group-text visually-hidden">Phone </label>
             <input id="phone" type="text" name="phone" placeholder="Phone" class="form-control" required>
-        </div>
-        <div class="input-group">
+            </div>
+
+            <div class="form-outline mb-4">
             <label for="email" class="input-group-text visually-hidden">Email</label>
             <input name="email" type="text" placeholder="Email" class="form-control" required>
-        </div>
-        <div class="input-group">
+            </div>
+
+            <div class="form-outline mb-4">
             <label for="avatar" class="input-group-text visually-hidden">Avatar</label>
             <input name="avatar" type="text" placeholder="Avatar" class="form-control" >
+            </div>
+            <button type="submit" class="btn btn-dark btn-block mb-4">
+              Sign up
+            </button>
+            </div>
+          </form>
+
+
+            <div class="text-center">
+              <p>I have an account</p>
+              <button type="button" class="btn btn-link btn-floating mx-1">
+                <a href="/login">Log in</a>
+              </button>
         </div>
-        <div class="col-2">
-            <button class="btn btn-primary" type="submit">Submit</button>
-        </div>
-    </form>
-    <h3>You already have an account? <a href="/login"><strong>Log in</strong></a></h3>
-</div>
+      </div>
+    </div>
+  </div>
+</section>

@@ -38,13 +38,12 @@ const loggersConfig = require('../config/logger');
 const logger = log4js.getLogger();
 
 // mail sender
-const mailSender = require('../config/notificationServices/mailSender');
-
+const nodeMailSender = require('../config/notificationServices/mailSender');
+const twilioSender = require('../config/notificationServices/twilio');
 
 //Main
 router.get('/', auth, async (req, res) => {
     const user = req.user;
-    
     try {
         const prods = await productSchema.find().lean()
         const cart = await cartSchema.findOne({ user: user._id.toString()})
@@ -55,27 +54,29 @@ router.get('/', auth, async (req, res) => {
     }
 });
 
+//Errors
+router.get('/partials/formErr', (req, res) => res.render('partials/formErr'));
+router.get('/partials/signUpError', (req, res) => res.render('partials/signUpError'))
 
 //Login
 router.get('/login', (req, res) => res.render('login'))
 
 router.post("/login", passport.authenticate('login',{
-    failureRedirect: '/login',
+    successRedirect: "/profile",
+    failureRedirect: '/partials/formErr',
     failureMessage: true
-  }),(req, res)=>{
-    res.redirect("/profile")
-    logger.info(req.body)
-});
+  }));
+
+router.get('/partials/formErr', (req, res) => res.render('partials/formErr'))
 
 //Register
 router.get('/signup', async (req, res) => res.render('signup'))
 
 router.post("/signup", passport.authenticate('signup',{
-    failureRedirect: '/signup',
+    failureRedirect: '/partials/signUpError',
     failureMessage: true
 }),(req, res)=>{
     res.redirect("/profile")
-    logger.info(req.body)
 });
 
 //Profile
@@ -102,10 +103,6 @@ router.get('/cart', auth, async (req, res) => {
         const cart = await cartSchema.findOne({ user: userId._id.toString()}).lean();
         const products = await Promise.all(cart.products.map(pId => productSchema.findById(pId).lean()));
         const total = products.reduce((total, prod) => total + prod.price, 0);
-        // for(let i = o; total < products.length; --i){
-        //     total =+ i
-        //     return total
-        // }
         res.render('cart', { cartId: cart._id, products, total});
     } catch (error) {
         logger.error(error)
@@ -116,38 +113,46 @@ router.get('/cart', auth, async (req, res) => {
 
 // GET Order
 router.get("/order", auth, async (req, res) => {
-    const { email, username, phone } = req.user;
+    const { email, username} = req.user;
     const userId = req.user;
     const context = { sent: false };
-  
+    
     const cart = await cartSchema.findOne({ user: userId._id.toString()});
-    const products = await Promise.all(cart.products.map(pId => productModel.findById(pId).lean()));
+    const products = await Promise.all(cart.products.map(pId => productSchema.findById(pId).lean()));
+    // const addressUser = localStorage.getItem(address);
+    const data = Math.floor(Math.random()*1000);
+    
     const total = products.reduce((total, prod) => total + prod.price, 0);
-  
+
     try {
+        cart.products = [];
+        await cart.save();
+
         await orderSchema.create({
         userId: userId._id.toString(),
-        total
-        })
+        email: email.toString(),
+        // sendAddress: addressUser,
+        products: products,
+        orderId: data,
+        total,
+        });
+   
 
-        cart.products = []
-        await cart.save()
-      
-        const prodElements = products.map(p => `<li>${p.name}</li>`)
+
+
+        const prodElements = products.map(p => `<li>${p.name}</li>`);
         const template = `<h1 style="color: yellow;"> Your order is being processed </h1>
                           <p>These are your products: </p>
                           <ul>${prodElements.join(" ")}</ul>`
-        mailSender.send(template, email, username)
-        // twilioSender.sendSms(username, email)
-        // twilioSender.sendWhatsapp(phone, username, email)
-        context.sent = true
+        await nodeMailSender.send(template, email, username);
+        await twilioSender.sendMessage(username, email);
+        context.sent = true;
         logger.info("Successful Order")
-        } catch (err) {
-        logger.error(err)
-        res.status(500).send(err)
+        } catch (error) {
+        logger.error(error)
+        res.status(500).send(error)
     }
-  
-    res.render("order", context)
+    res.render("order")
 })
 
 

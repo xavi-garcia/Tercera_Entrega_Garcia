@@ -7,11 +7,10 @@ const log4js = require('log4js');
 const loggersConfig = require('../logger');
 const logger = log4js.getLogger();
 
-class MailSender {
+class NodeMailSender {
   constructor() {
-    
     this.transporter = nodemailer.createTransport({
-      host: 'smtp.ethereal.email',
+      host: 'smtp.gmail.com',
       port: 587,
       auth: {
         user: process.env.GMAIL_ADDRESS,
@@ -54,4 +53,4 @@ class MailSender {
   }
 }
 
-module.exports = new MailSender();
+module.exports = new NodeMailSender();

@@ -7,11 +7,12 @@
         <thead class="thead-dark">
             <tr>
                 <th scope="col">&nbsp;</th>
-                <th scope="col">name</th>
-                <th scope="col">description</th>
-                <th scope="col">price</th>
-                <th scope="col">stock</th>
-                <th scope="col">code</th>
+                <th scope="col">Name</th>
+                <th scope="col">Description</th>
+                <th scope="col">Price</th>
+                <th scope="col">Stock</th>
+                <th scope="col">Code</th>
+                <th scope="col">Category</th>
                 <th scope="col">&nbsp;</th>
                 
             </tr>
@@ -25,6 +26,7 @@
               <td>{{this.price}}</td>
               <td>{{this.stock}}</td>
               <td>{{this.code}}</td>
+              <td>{{this.category}}</td>
               <td><a href="/admin/updateProduct/{{this._id}}" class="btn btn-outline-dark" type="button">Update Product</a></td>
             </tr>
             {{/each}}

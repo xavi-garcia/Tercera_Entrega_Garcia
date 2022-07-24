@@ -5,6 +5,7 @@ const manager = require('../Managers/ProductsManager');
 
 router.get("", manager.get);
 router.get("/:id", manager.getById);
+router.get("/category/:category", manager.getProdByCategory);
 router.post("", manager.upload);
 router.put("/:id", manager.update);
 router.delete("/:id", manager.deleteProd);

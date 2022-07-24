@@ -21,6 +21,10 @@
       <label for="code" class="input-group-text">Code</label>
       <input name="code" type="text" class="form-control"placeholder="Code *"{{#if product}} value="{{product.code}}" {{else}} required {{/if}}/>
     </div>
+            <div class="input-group">
+      <label for="category" class="input-group-text">Category</label>
+      <input name="category" type="text" class="form-control"placeholder="Category *"{{#if product}} value="{{product.category}}" {{else}} required {{/if}}/>
+    </div>
     <div class="input-group">
       <label for="thumbnail" class="input-group-text">Picture</label>
       <input name="thumbnail" type="url" class="form-control" placeholder="Thumbnail *"{{#if product}} value="{{product.thumbnail}}" {{else}} required {{/if}} />

@@ -1,33 +1,143 @@
 <div class="container mx">
-
     <h2>Cart</h2>
+<table class="table align-middle mb-0 bg-light" id="table">
+  <thead class="bg-light" >
     {{#if products.length}}
-        <table class="table table-sm table-hover">
-            <thead class="thead-dark">
-                <tr>
-                    <th scope="col">&nbsp;</th>
-                    <th scope="col">Name</th>
-                    <th scope="col">Price</th>
-                </tr>
-            </thead>
-            <tbody class="">
-                {{#each products}}
-                <tr id={{this._id}}>
-                    <td class="align-middle"><img src="{{this.thumbnail}}" alt="{{this.name}}" width="60"></td>
-                    <td>{{this.name}}</td>
-                    <td>{{this.price}}</td>
-                    <td>
-                        <button class="btn btn-dark" onclick="removeFromCart('{{{../cartId}}}', '{{this._id}}')">Delete</button>
-                    </td>
-                </tr>
-                {{/each}}
-            </tbody>
-        </table>
-        <h5>TOTAL: ${{total}}</h5>
-        <div class="d-grid gap-2 col-6 mx-auto">
-            <a href="/order" class="btn btn-outline-dark" type="button">Continue</a>
+    <tr>
+      <th>Name</th>
+      <th>Price</th>
+      <th>Stock</th>
+      <th>Quantity</th>
+       <th></th>
+    </tr>
+  </thead>
+  <tbody>
+    {{#each products}}
+    <tr id={{this._id}}>
+      <td>
+        <div class="d-flex align-items-center">
+          <img
+              src="{{this.thumbnail}}" 
+              alt="{{this.name}}"
+              style="width: 45px; height: 45px"
+              class="rounded-circle"
+              />
+          <div class="ms-3">
+            <p class="fw-bold mb-1" id="productName">{{this.name}}</p>
+          </div>
         </div>
-    {{!-- {{else}}
-        <h5>Empty Cart. Add products <a href="/">here</a></h5> --}}
+      </td>
+      <td>
+        <p class="fw-normal mb-2 ms-2">{{this.price}}</p>
+      </td>
+            <td>
+        <p class="fw-normal mb-2 ms-2">{{this.stock}}</p>
+      </td>
+      <td><p class="fw-normal mb-2 ms-2"></p></td>
+      <td>
+        <button class="btn btn-dark fw-normal mb-2 ms-1" onclick="removeFromCart('{{{../cartId}}}','{{this._id}}')">Delete</button>
+      </td>
+    </tr>
+    {{/each}}
+  </tbody>
+</table>
+        <!-- Credit card form -->
+<section>
+  <div class="row" id="table">
+    <div class="col-md-8 mb-4">
+      <div class="card mb-4">
+        <div class="card-header py-3">
+          <h5 class="mb-0">Billing details</h5>
+        </div>
+        <div class="card-body">
+          <form>
+            <div class="row mb-4">
+              <div class="col">
+                <div class="form-outline">
+                  <input type="text" id="form6Example1" class="form-control" />
+                  <label class="form-label" for="form6Example1">First name</label>
+                </div>
+              </div>
+              <div class="col">
+                <div class="form-outline">
+                  <input type="text" id="form6Example2" class="form-control" />
+                  <label class="form-label" for="form6Example2">Last name</label>
+                </div>
+              </div>
+            </div>
+            <div class="form-outline mb-4">
+              <input type="text" id="address" class="form-control" />
+              <label class="form-label" for="form6Example4">Address</label>
+            </div>
+
+            <hr class="my-4" />
+
+            <hr class="my-4" />
+
+            <h5 class="mb-4">Payment</h5>
+
+            <div class="form-check">
+              <input class="form-check-input" type="radio" name="flexRadioDefault" id="checkoutForm3"
+                checked />
+              <label class="form-check-label" for="checkoutForm3">
+                Credit card
+              </label>
+            </div>
+
+            <div class="form-check">
+              <input class="form-check-input" type="radio" name="flexRadioDefault" id="checkoutForm4" />
+              <label class="form-check-label" for="checkoutForm4">
+                Debit card
+              </label>
+            </div>
+
+            <div class="form-check mb-4">
+              <input class="form-check-input" type="radio" name="flexRadioDefault" id="checkoutForm5" />
+              <label class="form-check-label" for="checkoutForm5">
+                Paypal
+              </label>
+            </div>
+
+            <div class="row mb-4">
+              <div class="col">
+                <div class="form-outline">
+                  <input type="text" id="formNameOnCard" class="form-control" />
+                  <label class="form-label" for="formNameOnCard">Name on card</label>
+                </div>
+              </div>
+              <div class="col">
+                <div class="form-outline">
+                  <input type="text" id="formCardNumber" class="form-control" />
+                  <label class="form-label" for="formCardNumber">Credit card number</label>
+                </div>
+              </div>
+            </div>
+
+            <div class="row mb-4">
+              <div class="col-3">
+                <div class="form-outline">
+                  <input type="text" id="formExpiration" class="form-control" />
+                  <label class="form-label" for="formExpiration">Expiration</label>
+                </div>
+              </div>
+              <div class="col-3">
+                <div class="form-outline">
+                  <input type="text" id="formCVV" class="form-control" />
+                  <label class="form-label" for="formCVV">CVV</label>
+                </div>
+              </div>
+            </div>
+          </form>
+        </div>
+      </div>
+    </div>
+
+  </div>
+</section>
+<!-- Credit card form -->
+        <div class="d-grid gap-2 col-6 mx-auto">
+            <a href="/order" class="btn btn-outline-dark" type="button" onclick="getInfo()">Place order</a>
+        </div>
+
     {{/if}}
 </div>
