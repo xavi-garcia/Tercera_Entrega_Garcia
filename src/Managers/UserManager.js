@@ -6,16 +6,15 @@ const loggersConfig = require('../config/logger');
 const logger = log4js.getLogger();
 
 
-
 exports.createUsers = async (req,res) =>{
     const {body} = req;
     try {
         await userSchema.create(body);
         res.status(201).resend(body);
-      } catch (error) {
+    } catch (error) {
         logger.error(error);
         res.status(500).send(error)
-      }
+    }
 }
 
 exports.getAllUsers = async (req, res) => {

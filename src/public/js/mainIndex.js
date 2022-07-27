@@ -52,8 +52,3 @@ const seeDetails = async () =>{
   document.write(addressStorage, quantity, productName)
 
 }
-
-// let tbHandlebars = document.getElementById('details');
-// let tb = document.createElement('tb');
-// tb.innerHTML = `<p>${addressStorage}</p>`
-// tbHandlebars.appendChild(tb)

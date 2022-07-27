@@ -36,14 +36,15 @@ module.exports = (passport) => {
       }
       const user = await UserSchema.findOne({ username: username });
 
-      user.password = await bcrypt.hash(user.password, 10);
+      // user.password = await bcrypt.hash(user.password, 10);
       const isPasswordValid = await bcrypt.compare(password, user.password);
       if (!isPasswordValid) {
         return done(null, false, { message: "Incorrect password" });
       }
       done(null, user);
     } catch (err) {
-      done(err);
+      logger.error(err);
+      done(err)
     }
   };
 
@@ -87,7 +88,16 @@ module.exports = (passport) => {
     }
   };
 
-    passport.use(
+
+      passport.use(
+        "login",
+        new LocalStrategy(
+          { usernameField: "username", passwordField: "password" },
+          authenticateUser
+        )
+      );
+      
+      passport.use(
       "signup",
       new LocalStrategy(
         { usernameField: "username", passwordField: "password", confirmPasswordField:"password", passReqToCallback: true },
@@ -95,17 +105,8 @@ module.exports = (passport) => {
       )
     );
 
-    passport.use(
-      "login",
-      new LocalStrategy(
-        { usernameField: "username", passwordField: "password"},
-        authenticateUser
-      )
+    passport.serializeUser((user, done)=>done(null, user.id)
     );
-
-    passport.serializeUser((user, done)=>{
-        return done(null, user.id)
-    });
 
     passport.deserializeUser(async (id, done) => {
         done(null, await UserSchema.findById(id));

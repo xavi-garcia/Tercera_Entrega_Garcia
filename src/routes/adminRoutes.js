@@ -12,19 +12,8 @@ const productSchema = require("../schema/productsSchema");
 // middleware
 const auth = require('../middlewares/auth');
 
-// passport
-const passport = require('passport');
-
 router.get("/", auth, adminManager.index);
 router.get("/users", auth, adminManager.getUsers);
-router.get("/addUser", auth, (req, res) => res.render("admin/addUser"));
-router.post("/addUser",
-    passport.authenticate("signup", {
-        successRedirect: "/addAvatar",
-        failureRedirect : "/addUser",
-        failureFlash: true
-    })
-);
 router.get("/products", auth, adminManager.getProducts);
 router.get("/addProduct", auth, (req, res) => res.render("admin/addProduct"));
 router.post("/addProduct", productManager.uploadProd)

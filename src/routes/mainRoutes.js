@@ -12,20 +12,6 @@ const orderController = require("../Managers/OrdersManager");
 // middleware
 const auth = require('../middlewares/auth');
 
-// multer
-const multer  = require('multer')
-
-const storage = multer.diskStorage({
-    destination: (req, file, cb) => {
-      cb(null, "./public/img")
-    },
-    filename: (req, file, cb) => {
-      cb(null, `${file.originalname}`)
-    }
-  })
-  
-const upload = multer({ storage: storage })
-
 // passport
 const passport = require('passport');
 
@@ -64,13 +50,20 @@ router.get('/partials/signUpError', (req, res) => res.render('partials/signUpErr
 //Login
 router.get('/login', (req, res) => res.render('login'))
 
+// router.post("/login", passport.authenticate('login',{
+//     successRedirect: "/profile",
+//     failureRedirect: '/partials/formErr',
+//     failureMessage: true
+//   }));
+
 router.post("/login", passport.authenticate('login',{
-    successRedirect: "/profile",
     failureRedirect: '/partials/formErr',
     failureMessage: true
-  }));
-
-router.get('/partials/formErr', (req, res) => res.render('partials/formErr'))
+    
+  }),(req, res)=>{
+    res.redirect("/profile")
+    logger.info("Successfull Login")
+  })
 
 //Register
 router.get('/signup', async (req, res) => res.render('signup'))
@@ -138,9 +131,6 @@ router.get("/order", auth, async (req, res) => {
         orderId: data,
         total,
         });
-   
-
-
 
         const prodElements = products.map(p => `<li>${p.name}</li>`);
         const template = `<h1 style="color: yellow;"> Your order is being processed </h1>

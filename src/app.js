@@ -18,20 +18,11 @@ const log4js = require('log4js');
 const loggersConfig = require('./config/logger');
 const logger = log4js.getLogger();
 
-app.use(session({
-    secret:process.env.SESSION_SECRET,
-    resave:true, 
-    saveUninitialized:true,
-    
-}));
-
 //Passport
 const passport = require('passport');
 const initializePassport = require('./config/passportConnection')
 initializePassport(passport);
-app.use(passport.initialize());
-app.use(passport.session());
-app.use(cookieParser())
+
 
 // app.use(compression());
 
@@ -42,6 +33,17 @@ templateEngine(app);
 app.use(express.json());
 app.use(express.urlencoded({ extended: true }));
 app.use("/public", express.static(path.join(__dirname, "public")));
+
+app.use(session({
+  secret:process.env.SESSION_SECRET,
+  resave:true, 
+  saveUninitialized:true,
+  
+}));
+app.use(passport.initialize());
+app.use(passport.session());
+app.use(cookieParser())
+
 
 //Routers
 const adminRouter = require("./routes/adminRoutes");
@@ -66,7 +68,6 @@ app.use('/api/orders', orderRouter);
 const port = process.env.PORT || 8080;
 const server = app.listen(port,()=>logger.info(` Running process ${process.pid} on port ${port}`));
 const io = new Server(server);
-
 let client = new MyMongoClient();
 client.connect();
 
