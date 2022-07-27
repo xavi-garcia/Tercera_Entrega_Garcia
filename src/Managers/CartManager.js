@@ -1,10 +1,30 @@
 const cartSchema = require("../schema/cartSchema");
 const productSchema = require("../schema/productsSchema");
+const userSchema = require('../schema/userSchema');
 
 //Log4js
 const log4js = require('log4js');
 const loggersConfig = require('../config/logger');
 const logger = log4js.getLogger();
+
+exports.createCart = async (req, res) =>{
+    const userId = req.params;
+    try {
+        const hasCart = cartSchema.findOne({user: userId});
+        if(hasCart) {
+            logger.error("this user has a cart already");
+            return {status: "error", message: "this user has a cart already"};
+        }
+        const userAddress = userSchema.findOne({user: userId});
+        const actualAddress = userAddress.address;
+        const cart = await cartSchema.create({products: [], user: userId, address: actualAddress });
+        return {status: "success", payload: cart};
+    } catch(error) {
+        logger.error("the cart couldn't be created");
+        return {status: "error", message: "the cart couldn't be created"};
+    }
+
+}
 
 exports.getAll = async (req, res) => {
     let products = [];
@@ -35,7 +55,7 @@ exports.getCartById = async (req, res) => {
 },
 
 exports.getCartByUser = async (req, res) => {
-    const id = req.user;
+    const {id} = req.params;
     if (!id) {
         return res.sendStatus(404)
     }
@@ -49,8 +69,27 @@ exports.getCartByUser = async (req, res) => {
     }
 },
 
-exports.UploadCart = async (req, res) => {
+
+exports.updateCartById = async (req, res) => {
+    const {id, prodId} = req.params;
+    const {body} = req;
+    
+    try {
+        const cart = await cartSchema.findById({ _id: id });
+        let idpd = await productSchema.findById({ _id: prodId }); 
+        const update = await cartSchema.updateOne({_id: id,}, {$set: body, });
+        logger.info("Cart succesfully updated");
+        res.status(201).send(body);
+    } catch (error) {
+        logger.error(error);
+        res.status(500).send(error);
+    }
+},
+
+exports.addProductById = async (req, res) => {
     const { id, idprod } = req.params;
+    let products = [];
+    products = await cartSchema.find()
     
     try {
         const cart = await cartSchema.findById({ _id: id });

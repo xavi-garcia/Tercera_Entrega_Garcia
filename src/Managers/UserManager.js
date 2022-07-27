@@ -5,6 +5,19 @@ const log4js = require('log4js');
 const loggersConfig = require('../config/logger');
 const logger = log4js.getLogger();
 
+
+
+exports.createUsers = async (req,res) =>{
+    const {body} = req;
+    try {
+        await userSchema.create(body);
+        res.status(201).resend(body);
+      } catch (error) {
+        logger.error(error);
+        res.status(500).send(error)
+      }
+}
+
 exports.getAllUsers = async (req, res) => {
   const users = await userSchema.find().lean();
   logger.info("User: " + users.length)
@@ -26,6 +39,20 @@ exports.getUserId = async (req, res) => {
     }
 };
 
+exports.updateUserById = async (req, res) => {
+    const {id} = req.params;
+    const {body} = req;
+    if (!id) { return res.sendStatus(404)};
+    try {
+        const user = await userSchema.findById({ _id: id }).lean();
+        const update = await userSchema.updateOne({_id: id,}, {$set: body,});
+        logger.info("User info succesfully updated");
+        res.status(201).send(body);
+    } catch (error) {
+        logger.error(error);
+        res.status(500).send(error);
+    }
+}
 
 exports.deleteAll = async (req, res) => {
     try {

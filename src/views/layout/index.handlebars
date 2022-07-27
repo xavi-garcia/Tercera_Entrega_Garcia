@@ -27,16 +27,9 @@
           <ul class="navbar-nav me-auto mb-2 mb-lg-0">
             <li class="nav-item"><a class="nav-link active" aria-current="page" href="/">Home</a></li>
             <li class="nav-item"><a class="nav-link" href="/cart">Cart</a></li>
-
+            <li class="nav-item"><a class="nav-link" href="/chat">Chat</a></li>
             <li class="nav-item dropdown">
-              <a
-                class="nav-link dropdown-toggle"
-                href="#"
-                id="navbarDropdown"
-                role="button"
-                data-bs-toggle="dropdown"
-                aria-expanded="false"
-              >Account</a>
+              <a class="nav-link dropdown-toggle" href="#" id="navbarDropdown" role="button" data-bs-toggle="dropdown" aria-expanded="false">Account</a>
               <ul class="dropdown-menu" aria-labelledby="navbarDropdown">
                 <li id="why"><a class="dropdown-item" href="/profile">Profile</a></li>
                  <li><hr class="dropdown-divider" /></li>
@@ -59,8 +52,11 @@
       integrity="sha384-ka7Sk0Gln4gmtz2MlQnikT1wXgYsOg+OMhuP+IlRH9sENBO0LRn5q+8nbTov4+1p"
       crossorigin="anonymous"
     ></script>
+        <script src="//cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/handlebars.js/4.7.7/handlebars.min.js" integrity="sha512-RNLkV3d+aLtfcpEyFG8jRbnWHxUqVZozacROI4J2F1sTaDqo1dPQYs01OMi1t1w9Y2FdbSCDSQ2ZVdAC8bzgAg==" crossorigin="anonymous" referrerpolicy="no-referrer"></script>
+    <script src="/socket.io/socket.io.js"></script>
     <script src="/public/js/mainIndex.js"></script>
-
+    <script src="/public/js/socketChat.js"></script>
   </body>
 
 </html>

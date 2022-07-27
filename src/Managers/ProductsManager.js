@@ -5,7 +5,7 @@ const log4js = require('log4js');
 const loggersConfig = require('../config/logger');
 const logger = log4js.getLogger();
 
-exports.get = async (req, res) => {
+exports.getAll = async (req, res) => {
     try {
         let products = await productSchema.find();
         logger.info("Products: " + products);
@@ -16,7 +16,7 @@ exports.get = async (req, res) => {
  
 },
 
-exports.getById = async (req, res) => {
+exports.getProdById = async (req, res) => {
     const { id } = req.params;
     try {
         const getId = await productSchema.findOne({_id: id});
@@ -51,7 +51,7 @@ exports.getProdByCategory = async (req, res) => {
 
 
 
-exports.upload = async (req, res) => {
+exports.uploadProd = async (req, res) => {
     const { body } = req;
     try {
       await productSchema.create(body);
@@ -62,7 +62,7 @@ exports.upload = async (req, res) => {
     }
 },
 
-exports.update = async (req, res) => {
+exports.updateProd = async (req, res) => {
     const { body } = req;
     const { id } = req.params;
     try {

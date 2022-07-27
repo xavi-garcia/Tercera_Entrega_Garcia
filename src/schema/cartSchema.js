@@ -11,6 +11,9 @@ const CartSchema = new mongoose.Schema(
             type: String,
             required:true,
         },
+        address: {
+            type: String,
+        },
         total: {
             type: Number,
             default: 0,

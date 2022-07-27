@@ -27,10 +27,10 @@ router.post("/addUser",
 );
 router.get("/products", auth, adminManager.getProducts);
 router.get("/addProduct", auth, (req, res) => res.render("admin/addProduct"));
-router.post("/addProduct", productManager.upload)
+router.post("/addProduct", productManager.uploadProd)
 router.get("/updateProduct/:id", auth, adminManager.getById);
-router.post('/updateProduct/:id', auth, productManager.update)
+router.post('/updateProduct/:id', auth, productManager.updateProd)
 router.get("/orders", auth, adminManager.getOrders);
-router.delete("/orders", auth, orderManager.deleteAllOrders);
+router.delete("/orders", auth, orderManager.deleteAll);
 
 module.exports = router

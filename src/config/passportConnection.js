@@ -70,7 +70,7 @@ module.exports = (passport) => {
         ...user,
         id: user._id
       });
-      const cart = await CartSchema.create({ user: user._id.toString() });
+      const cart = await CartSchema.create({ user: user._id.toString(), address: user.address });
       logger.info("Cart successfully created:\n" + cart);
       const emailTemplate = `<div>
                                 <h1 style="color: blue;"> User registered:</h1>

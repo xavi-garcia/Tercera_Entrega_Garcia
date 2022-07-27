@@ -3,11 +3,11 @@ const router = express.Router();
 
 const manager = require('../Managers/ProductsManager');
 
-router.get("", manager.get);
-router.get("/:id", manager.getById);
+router.get("", manager.getAll);
+router.get("/:id", manager.getProdById);
 router.get("/category/:category", manager.getProdByCategory);
-router.post("", manager.upload);
-router.put("/:id", manager.update);
+router.post("", manager.uploadProd);
+router.put("/:id", manager.updateProd);
 router.delete("/:id", manager.deleteProd);
 router.delete("", manager.deleteAll);
 

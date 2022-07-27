@@ -35,7 +35,8 @@ const ProductsSchema = new mongoose.Schema(
             default: Date.now() 
         },
         quantity:{
-            type:Number
+            type:Number,
+            default: 0
         }
     }
 );

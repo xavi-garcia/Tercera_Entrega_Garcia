@@ -54,6 +54,9 @@ router.get('/', auth, async (req, res) => {
     }
 });
 
+//Chat
+router.get('/chat', (req, res) => res.render('chat'))
+
 //Errors
 router.get('/partials/formErr', (req, res) => res.render('partials/formErr'));
 router.get('/partials/signUpError', (req, res) => res.render('partials/signUpError'))
@@ -85,7 +88,6 @@ router.get("/profile", auth, async (req, res)=>{
     res.render("profile", { name, username, avatar, age, phone, email })
 });
 
-router.post('/addAvatar', upload.single('avatar', orderController.updateAvatar))
   
 //Logout ('Now logout() requires a callback function)
 router.get('/logout', auth, function(req, res, next) {
@@ -119,7 +121,7 @@ router.get("/order", auth, async (req, res) => {
     
     const cart = await cartSchema.findOne({ user: userId._id.toString()});
     const products = await Promise.all(cart.products.map(pId => productSchema.findById(pId).lean()));
-    // const addressUser = localStorage.getItem(address);
+    
     const data = Math.floor(Math.random()*1000);
     
     const total = products.reduce((total, prod) => total + prod.price, 0);
