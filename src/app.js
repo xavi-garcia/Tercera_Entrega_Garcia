@@ -24,8 +24,6 @@ const initializePassport = require('./config/passportConnection')
 initializePassport(passport);
 
 
-// app.use(compression());
-
 //Template handlebars
 const templateEngine = require('./engine');
 templateEngine(app);

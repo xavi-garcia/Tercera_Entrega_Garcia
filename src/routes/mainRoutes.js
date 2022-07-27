@@ -11,6 +11,8 @@ const orderController = require("../Managers/OrdersManager");
 
 // middleware
 const auth = require('../middlewares/auth');
+const { generateToken } = require('../config/jwtAuth');
+const jwtAuth = require('../config/jwtAuth')
 
 // passport
 const passport = require('passport');
@@ -61,9 +63,14 @@ router.post("/login", passport.authenticate('login',{
     failureMessage: true
     
   }),(req, res)=>{
+    const token = generateToken(req.user);
+      res.clearCookie("token");
+      res.cookie("token", token, {
+        httpOnly: true
+      });
     res.redirect("/profile")
     logger.info("Successfull Login")
-  })
+});
 
 //Register
 router.get('/signup', async (req, res) => res.render('signup'))
@@ -72,6 +79,9 @@ router.post("/signup", passport.authenticate('signup',{
     failureRedirect: '/partials/signUpError',
     failureMessage: true
 }),(req, res)=>{
+    const token = generateToken(req.user);
+    res.clearCookie("token");
+    res.cookie("token", token);
     res.redirect("/profile")
 });
 
@@ -87,6 +97,7 @@ router.get('/logout', auth, function(req, res, next) {
     const { username } = req.user
     req.logout(function(err) {
       if (err) { return next(err); }
+      res.clearCookie("token");
       res.render("logout", { username });
     });
   });
@@ -126,7 +137,7 @@ router.get("/order", auth, async (req, res) => {
         await orderSchema.create({
         userId: userId._id.toString(),
         email: email.toString(),
-        // sendAddress: addressUser,
+        sendAddress: cart.address,
         products: products,
         orderId: data,
         total,

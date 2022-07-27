@@ -35,8 +35,6 @@ module.exports = (passport) => {
         return done(null, false, { message: "User doesn't exist" });
       }
       const user = await UserSchema.findOne({ username: username });
-
-      // user.password = await bcrypt.hash(user.password, 10);
       const isPasswordValid = await bcrypt.compare(password, user.password);
       if (!isPasswordValid) {
         return done(null, false, { message: "Incorrect password" });
@@ -96,17 +94,16 @@ module.exports = (passport) => {
           authenticateUser
         )
       );
-      
-      passport.use(
-      "signup",
-      new LocalStrategy(
-        { usernameField: "username", passwordField: "password", confirmPasswordField:"password", passReqToCallback: true },
-        registerUser
-      )
-    );
 
-    passport.serializeUser((user, done)=>done(null, user.id)
-    );
+      passport.use(
+        "signup",
+        new LocalStrategy(
+          { usernameField: "username", passwordField: "password", confirmPasswordField:"password", passReqToCallback: true },
+          registerUser
+        )
+      );
+
+    passport.serializeUser((user, done)=>done(null, user.id));
 
     passport.deserializeUser(async (id, done) => {
         done(null, await UserSchema.findById(id));

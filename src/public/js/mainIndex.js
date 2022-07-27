@@ -7,16 +7,6 @@ const addToCart = async (cartId, productId) => {
 
 };
 
-const getInfo = async () =>{
-  const address = document.getElementById("address").value;
-  localStorage.setItem('address', address);
-  const prodName = document.getElementById("productName").value;
-  localStorage.setItem('productName', prodName);
-  const quantity = document.getElementById("quantity").value;
-  localStorage.setItem('quantity', quantity);
-  return address, quantity
-};
-
 const removeFromCart = async (cartId, productId) => {
   try {
     const res = await fetch(`/api/cart/${cartId}/products/${productId}`, { method: 'DELETE' })
@@ -38,17 +28,3 @@ const deleteAllOrders = async()=>{
   }
 };
 
-
-const getTotal = async () =>{
-  const price = document.getElementById("price").innerText;
-  alert(price )
-}
-
-
-const seeDetails = async () =>{
-  addressStorage = localStorage.getItem('address');
-  quantity = localStorage.getItem('quantity');
-  productName = localStorage.getItem('productName');
-  document.write(addressStorage, quantity, productName)
-
-}
